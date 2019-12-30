@@ -62,11 +62,11 @@ class Layout extends React.Component {
       >
         <header>{header}</header>
         <main>{children}</main>
-        <footer>
+        {/* <footer>
           © {new Date().getFullYear()}, Built By 
           {` `}
           <a href="https://saadpasta.github.io">Saad Pasta</a>
-        </footer>
+        </footer> */}
       </div>
     )
   }

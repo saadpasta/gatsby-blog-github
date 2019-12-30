@@ -75,5 +75,63 @@ module.exports = {
         pathToConfigModule: `src/utils/typography`,
       },
     },
+    //  {
+    //   resolve: "gatsby-source-graphql",
+    //    options: {
+    //      // This type will contain remote schema Query type
+    //      typeName: "GITHUB",
+    //      // This is the field under which it's accessible
+    //      fieldName: "github",
+    //      // URL to query from
+    //      url: "https://api.github.com/graphql",
+    //    },
+    //  },
+    // Github API 
+    {
+      resolve: `gatsby-source-github-api`,
+      options: {
+        token: btoa("ëûã¯wóMüÛ}Î´á¯[Ý®:Ý¯ß]|oG"),
+        graphQLQuery: `
+        query {
+          repository(owner:"saadpasta",name:"DeveloperFolio"){
+            issue(number:${githubIssueNumber}){
+              id
+              body
+              title
+            }
+            issues(first:20, states:OPEN) {
+              edges {
+                node {
+                  id
+                  body
+                  number
+                  title
+                  updatedAt
+                  author{
+                    login
+                    url
+                    avatarUrl
+                  }
+                  labels(first:5) {
+                    edges {
+                      node {
+                        name
+                      }
+                    }
+                    
+                  }
+                }
+              }
+            }
+          }
+
+        }
+        `,
+        variables: {
+          githubIssueNumber:2
+        }
+      }
+    
+    }
   ],
 }

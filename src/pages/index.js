@@ -11,16 +11,17 @@ class BlogIndex extends React.Component {
     const { data } = this.props
     const siteTitle = data.site.siteMetadata.title
     const posts = data.allMarkdownRemark.edges
-
+    const githubPosts = data.githubData.data.repository.issues
+    console.log(githubPosts)
     return (
       <Layout location={this.props.location} title={siteTitle}>
         <SEO title="All posts" />
         <Bio />
-        {posts.map(({ node }) => {
-          const title = node.frontmatter.title || node.fields.slug
+        {githubPosts.edges.map(({ node }) => {
+          const title = node.title || node.fields.slug
           return (
             <article
-              key={node.fields.slug}
+              key={node.title}
               style={{
                 display: 'flex',
                 justifyContent: 'space-around',
@@ -41,16 +42,16 @@ class BlogIndex extends React.Component {
                       marginBottom: rhythm(1 / 4),
                     }}
                   >
-                    <Link style={{ boxShadow: `none` }} to={node.fields.slug}>
+                    <Link style={{ boxShadow: `none` }} to={node.title}>
                       {title}
                     </Link>
                   </h3>
-                  <small>{node.frontmatter.date}</small>
+                  <small>{node.updatedAt}</small>
                 </header>
                 <section>
                   <p
                     dangerouslySetInnerHTML={{
-                      __html: node.frontmatter.description || node.excerpt,
+                      __html: node.body || node.excerpt,
                     }}
                   />
                 </section>
@@ -83,6 +84,27 @@ export const pageQuery = graphql`
             date(formatString: "MMMM DD, YYYY")
             title
             description
+          }
+        }
+      }
+    }
+    githubData {
+      data {
+        repository {
+          issues {
+            edges {
+              node {
+                
+                body
+                title
+                updatedAt(formatString: "DD/MM/YYYY")
+                author {
+                  avatarUrl
+                  login
+                  url
+                }
+              }
+            }
           }
         }
       }
